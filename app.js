@@ -38,26 +38,37 @@ app.get("/dreams", (req, res)=>{
 });
 
 app.post("/dreams", (req, res)=>{
-    let sql = "INSERT INTO dreams (author, dateDreamed, title, body, nightmare, lucid) VALUES (";
-    sql += req.body.author + ","
-    sql += "'" + req.body.dateDreamed + "',"
-    sql += "'" + req.body.title + "',"
-    sql += "'" + req.body.body + "',"
-    sql += req.body.nightmare + ","
-    sql += req.body.lucid + ");"
-    // todo: fix sql injection
-    
-    console.log("Dream POST endpoint")
-    console.log(sql);
+    const sql = "INSERT INTO dreams (author, dateDreamed, title, body, nightmare, lucid)"+
+    "VALUES (?, ?, ?, ?, ?, ?)";
+    const vals = [req.body.author, req.body.dateDreamed, req.body.title, 
+        req.body.body, req.body.nightmare, req.body.lucid]
 
-    con.query(sql, (err, result) => {
+    con.query(sql, vals, (err, result) => {
         if (err) throw err;
-        res.send("works");
+        const id = result.insertId;
+        // return the inserted dream to the user
+        con.query("SELECT * FROM dreams WHERE d_id="+id, (err, result) =>{
+            if (err) throw err;
+            res.send(result[0]);
+        });
     })
 });
 
 app.get("/dreams/:id", (req, res)=>{
     console.log(`Dream id=${req.params.id} GET endpoint`)
+    const sql = "SELECT * FROM dreams WHERE d_id=?";
+    con.query(sql, req.params.id, (error, results, fields) =>{
+        if (error){
+            return console.error(error.message);
+        }
+        let returnVal = {}
+        try {
+            returnVal = JSON.parse(JSON.stringify(results[0]));
+        } catch (err) {
+            console.log(results);
+        }
+        res.json(returnVal);
+    })
 });
 
 app.delete("/dreams/:id", (req, res)=>{
