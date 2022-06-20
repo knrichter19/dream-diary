@@ -19,7 +19,8 @@ const routes = [
   {
     path: '/dreams/:id',
     name: 'dreamSingle',
-    component: DreamsSingle
+    component: DreamsSingle,
+    props: true
   }
 ]
 
