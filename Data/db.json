@@ -1,0 +1,26 @@
+{
+    "dreams": [
+        {
+            "id": 1,
+            "author": "Katya",
+            "title": "My test dream",
+            "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, vero assumenda! Beatae, ipsum magni veniam assumenda amet eveniet, quam a molestias consequuntur soluta laboriosam magnam, culpa quis. Dolor minima a iusto saepe, ad sunt ratione eum ex perspiciatis in distinctio quasi inventore voluptas impedit? Nam voluptates maxime sapiente quaerat temporibus, tempore totam quas perspiciatis, necessitatibus minima nesciunt rerum repellat quis officiis perferendis magni, consequuntur nobis ad corrupti voluptas eligendi error praesentium. Iure harum odit unde? Quis, at, illum quibusdam dolore animi hic unde aliquam magnam debitis quas tenetur quaerat dicta cupiditate nulla delectus ab dolor porro nobis ipsa ipsum veritatis!",
+            "dreamedOn": "2000-01-01",
+            "postedOn": "2000-01-01 5am",
+            "updatedOn": "2000-01-01 5am",
+            "lucid": true,
+            "nightmare": false
+        },
+        {
+            "id": 2,
+            "author": "Katya",
+            "title": "My test dream 2",
+            "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, vero assumenda! Beatae, ipsum magni veniam assumenda amet eveniet, quam a molestias consequuntur soluta laboriosam magnam, culpa quis. Dolor minima a iusto saepe, ad sunt ratione eum ex perspiciatis in distinctio quasi inventore voluptas impedit? Nam voluptates maxime sapiente quaerat temporibus, tempore totam quas perspiciatis, necessitatibus minima nesciunt rerum repellat quis officiis perferendis magni, consequuntur nobis ad corrupti voluptas eligendi error praesentium. Iure harum odit unde? Quis, at, illum quibusdam dolore animi hic unde aliquam magnam debitis quas tenetur quaerat dicta cupiditate nulla delectus ab dolor porro nobis ipsa ipsum veritatis!",
+            "dreamedOn": "2000-01-03",
+            "postedOn": "2000-01-03 5am",
+            "updatedOn": "2000-01-03 5am",
+            "lucid": false,
+            "nightmare": true
+        }
+    ]
+}
