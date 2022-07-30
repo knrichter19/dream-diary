@@ -29,7 +29,7 @@ con.connect((err)=>{
 
 // dream endpoints 
 app.get("/dreams", (req, res)=>{
-    console.log("Dream GET endpoint")
+    console.log("GET /dreams");
     const sql = "SELECT * FROM dreams";
     con.query(sql, (error, results, fields) =>{
         if (error){
@@ -40,25 +40,47 @@ app.get("/dreams", (req, res)=>{
 });
 
 app.post("/dreams", (req, res)=>{
-    const sql = "INSERT INTO dreams (author, dateDreamed, title, body, nightmare, lucid)"+
-    "VALUES (?, ?, ?, ?, ?, ?)";
-    const vals = [req.body.author, req.body.dateDreamed, req.body.title, 
-        req.body.body, req.body.nightmare, req.body.lucid]
+    const updatedOn = Date.now()
+    console.log("POST /dreams");
+    const sql = "INSERT INTO dreams (author, title, body, dreamedOn, postedOn, updatedOn, nightmare, lucid)"+
+    "VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), ?, ?)";
+    const vals = [req.body.author, req.body.title, req.body.body, 
+        req.body.dreamedOn, req.body.nightmare, req.body.lucid]
 
     con.query(sql, vals, (err, result) => {
         if (err) throw err;
         const id = result.insertId;
-        // return the inserted dream to the user
+        // return the inserted dream to the user - TODO make return status code
+        con.query("SELECT * FROM dreams WHERE id="+id, (err, result) =>{
+            if (err) throw err;
+            res.json({
+                status: 200,
+                result: result[0]
+            });
+        });
+    })
+});
+
+app.put("/dreams/:id", (req, res)=>{
+    console.log(`PUT /dreams/${req.params.id}`);
+    const sql = "UPDATE dreams" + 
+    "SET title=?; body=?, dreamedOn=?, updatedOn=CURRENT_TIMESTAMP(), nightmare=?, lucid=?" + 
+    "WHERE id=?";
+    const vals = [req.body.title, req.body.body, req.body.dreamedOn, req.body.nightmare, req.body.lucid]
+    con.query(sql, vals, (err, result) => {
+        if (err) throw err;
+        const id = result.insertId;
+        // return the inserted dream to the user - TODO make return status code
         con.query("SELECT * FROM dreams WHERE d_id="+id, (err, result) =>{
             if (err) throw err;
             res.send(result[0]);
         });
     })
-});
+})
 
 app.get("/dreams/:id", (req, res)=>{
-    console.log(`Dream id=${req.params.id} GET endpoint`)
-    const sql = "SELECT * FROM dreams WHERE d_id=?";
+    console.log(`GET /dreams/${req.params.id}`)
+    const sql = "SELECT * FROM dreams WHERE id=?";
     con.query(sql, req.params.id, (error, results, fields) =>{
         if (error){
             return console.error(error.message);
@@ -67,30 +89,30 @@ app.get("/dreams/:id", (req, res)=>{
         try {
             returnVal = JSON.parse(JSON.stringify(results[0]));
         } catch (err) {
-            console.log(results);
+            res.sendStatus(404);
         }
         res.json(returnVal);
     })
 });
 
 app.delete("/dreams/:id", (req, res)=>{
-    console.log(`Dream id=${req.params.id} DELETE endpoint`)
+    console.log(`DELETE /dreams/${req.params.id}`)
 });
 
 
 // user endpoints
 app.get("/users", (req, res)=>{
-    console.log("Users GET endpoint");
+    console.log("GET /users");
 });
 
 app.post("/users", (req, res)=>{
-    console.log("Users POST endpoint")
+    console.log("POST /users")
 });
 
 app.get("/users/:id", (req, res)=>{
-    console.log(`User id=${req.params.id} GET endpoint`)
+    console.log(`GET users/${req.params.id}`)
 });
 
 app.get("/users/:id/dreams", (req,res)=>{
-    console.log(`User id=${req.params.id} dream GET endpoint`)
+    console.log(`GET users/${req.params.id}/dreams`)
 });

@@ -25,16 +25,16 @@
 
 <script>
 import { ref } from '@vue/reactivity'
+import { useRouter, useRoute } from 'vue-router'
 export default {
     props: ["dream"],
     setup(props){
+        const router = useRouter();
         const dreamSubmit = ref({
             author: "Katya",
             title: "Title",
             body: "Type your dream here!",
             dreamedOn: "2000-01-01",
-            postedOn: null,
-            updatedOn: null,
             lucid: false,
             nightmare: false
         });
@@ -45,15 +45,11 @@ export default {
         const submitChanges = async() => {
             // todo: check for edit vs new
 
-            const dateSubmitted = Date.now();
-
-            if (!dreamSubmit.value.postedOn){
-                dreamSubmit.value.postedOn = dateSubmitted;
-            }
-            dreamSubmit.value.updatedOn = dateSubmitted;
-            dreamSubmit.value.dreamedOn = new Date(dreamSubmit.value.dreamedOn);
+            dreamSubmit.value.dreamedOn = new Date(dreamSubmit.value.dreamedOn).toJSON().slice(0, 10);
             console.log("DREAM SUBMITTED:");
             console.log(dreamSubmit.value);
+
+            let newId = "";
             
             // put if making an edit
             if (dreamSubmit.value.id){
@@ -64,7 +60,10 @@ export default {
                     },
                     method: "PUT",
                     body: JSON.stringify(dreamSubmit.value)
-                }).then(response => {console.log("RESPONSE:", response)})
+                }).then(data => data.json()).then(response => {
+                    console.log("RESPONSE:", response)
+                    newId = response.result.id;
+                })
 
             } else { // post if making a new one
                 await fetch("http://localhost:3000/dreams", {
@@ -74,9 +73,13 @@ export default {
                     },
                     method: "POST",
                     body: JSON.stringify(dreamSubmit.value)
-                }).then(response => {console.log("RESPONSE:", response)})
+                }).then(data => data.json()).then(response => {
+                    console.log("RESPONSE:", response)
+                    newId = response.result.id;
+                })
             }
             // redirect to dream page
+            router.push({ path: '/dreams/'+newId }) // todo: maybe pass in the data we get back to avoid making a new request?
         }
 
         return {

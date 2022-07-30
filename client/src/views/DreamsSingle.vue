@@ -32,11 +32,12 @@ export default {
         })
 
         const getData = async ()=>{
-            try{
+            try{ //todo: handle 404s
                 const data = await fetch("http://localhost:3000/dreams/"+props.id);
                 console.log("here", "id=", props.id)
+                console.log(data.status);
                 dream.value = await data.json();
-                console.log(dream.value);
+                console.log("RESULT", dream.value);
             } catch (err){
                 console.log(err);
             }
