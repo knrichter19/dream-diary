@@ -2,7 +2,7 @@
   <div class="displayHorizontal">
     <div class="dreamTile" v-for="dream in dreams" :key="dream.id"> <!-- move to own component? -->
         <h2><a :href="`/dreams/`+dream.id">{{dream.title}}</a></h2>
-        <p>{{dream.author}} - {{dream.dreamedOn}} (Posted {{dream.postedOn}})</p>
+        <p>{{dream.author}} - {{new Date(dream.dreamedOn).toDateString("en-US")}} (Posted {{new Date(dream.postedOn).toLocaleString("en-US")}})</p>
         <p>{{dream.body.substr(0, 50)}}...</p>
     </div>
   </div>

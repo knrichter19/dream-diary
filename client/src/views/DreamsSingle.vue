@@ -6,9 +6,9 @@
     </div>
     <div class="details">
         <h4><span class="detail-question">Dreamed by: </span>{{dream.author}}</h4>
-        <h4><span class="detail-question">Dreamed on: </span>{{dream.dateDreamed}}</h4>
-        <h4><span class="detail-question">Posted on: </span>{{dream.datePosted}}</h4>
-        <h4 v-if="dream.postedOn !== dream.updatedOn"><span class="detail-question">Last updated: </span>{{dream.dateUpdated}}</h4>
+        <h4><span class="detail-question">Dreamed on: </span>{{new Date(dream.dreamedOn).toDateString("en-US")}}</h4>
+        <h4><span class="detail-question">Posted on: </span>{{new Date(dream.postedOn).toLocaleString("en-US")}}</h4>
+        <h4 v-if="dream.postedOn !== dream.updatedOn"><span class="detail-question">Last updated: </span>{{new Date(dream.updatedOn).toLocaleString("en-US")}}</h4>
         <h4><span class="detail-question">Lucid? </span>{{dream.lucid ? "Yes":"No"}}</h4>
         <h4><span class="detail-question">Nightmare? </span>{{dream.nightmare ? "Yes":"No"}}</h4>
     </div>
